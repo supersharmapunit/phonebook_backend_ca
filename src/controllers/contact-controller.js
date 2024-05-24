@@ -6,11 +6,10 @@ const { PrismaClientKnownRequestError } = require('@prisma/client');
 
 const addContact = async (req, res) => {
     try {
-        const userId = req.user.id; // Assuming you have implemented authentication middleware
+        const userId = req.user.id;
         console.log("here", userId, req.body);
         const contactData = contactSchema.parse(req.body);
 
-        // Check if the contact already exists for the user
         const existingContact = await prisma.contact.findFirst({
             where: {
                 userId,
@@ -22,7 +21,6 @@ const addContact = async (req, res) => {
             return res.status(400).json({ error: 'Contact already exists' });
         }
 
-        // Create a new contact
         const newContact = await prisma.contact.create({
             data: {
                 name: contactData.name,
@@ -44,18 +42,14 @@ const addContact = async (req, res) => {
             console.error(error);
             return res.status(500).json({ error: 'Database error' });
         }
-        console.log(error instanceof PrismaClientKnownRequestError);
-        console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
 
 const markNumberAsSpam = async (req, res) => {
     try {
-        const userId = req.user.id; // Assuming you have implemented authentication middleware
+        const userId = req.user.id;
         const { phoneNumber } = markSpamSchema.parse(req.body);
-
-        // Find the contact with the given phone number
         const contact = await prisma.contact.findFirst({
             where: {
                 phoneNumber,
@@ -63,7 +57,6 @@ const markNumberAsSpam = async (req, res) => {
         });
 
         if (!contact) {
-            // Create a new contact and mark it as spam
             const newContact = await prisma.contact.create({
                 data: {
                     name: "unknown",
@@ -75,7 +68,6 @@ const markNumberAsSpam = async (req, res) => {
 
             return res.status(201).json({ message: 'Number marked as spam', contact: newContact });
         } else {
-            // Update the existing contact and mark it as spam
             const updatedContact = await prisma.contact.update({
                 where: { id: contact.id },
                 data: { isSpam: true },
@@ -94,10 +86,9 @@ const markNumberAsSpam = async (req, res) => {
 
 const getContactDetails = async (req, res) => {
     try {
-        const userId = req.user.id; // Assuming you have implemented authentication middleware
+        const userId = req.user.id; 
         const { phoneNumber } = getContactDetailsSchema.parse(req.params);
 
-        // Find the contact with the given phone number
         const contact = await prisma.contact.findFirst({
             where: { phoneNumber },
             include: { user: true },
@@ -107,10 +98,8 @@ const getContactDetails = async (req, res) => {
             return res.status(404).json({ error: 'Contact not found' });
         }
 
-        // Check if the user is a registered user
         const isRegisteredUser = !!contact.user;
 
-        // Check if the user requesting the details is in the contact's contact list
         const isInContactList = isRegisteredUser && !!(await prisma.contact.findFirst({
             where: {
                 userId: contact.user.id,
@@ -118,7 +107,6 @@ const getContactDetails = async (req, res) => {
             },
         }));
 
-        // Prepare the response data
         const responseData = {
             name: contact.name,
             phoneNumber: contact.phoneNumber,

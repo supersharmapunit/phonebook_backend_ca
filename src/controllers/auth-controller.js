@@ -1,37 +1,23 @@
-// src/controllers/authController.js
 const bcrypt = require('bcrypt');
-const { z } = require("zod");
 const jwt = require("jsonwebtoken");
 const { userSchema, userLoginRequestSchema } = require('../validations/user-validations');
-const { SALTS, JWT_SECRET  } = require('../config/server-config');
+const { JWT_SECRET  } = require('../config/server-config');
 
 const prisma = require("../config/dbClient");
+const { saveUser } = require('../services/auth-service');
 
 const register = async (req, res) => {
     try {
         const userData = userSchema.parse(req.body);
-
-        // Check if the phone number already exists
         const existingUser = await prisma.user.findUnique({
             where: { phoneNumber: userData.phoneNumber },
         });
-
         if (existingUser) {
             return res.status(400).json({ error: 'Phone number already registered' });
         }
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(userData.password, bcrypt.genSaltSync(parseInt(SALTS) || 10));
-
-        // Create a new user
-        const newUser = await prisma.user.create({
-            data: {
-                name: userData.name,
-                phoneNumber: userData.phoneNumber,
-                email: userData.email,
-                password: hashedPassword,
-            },
-        });
+        await saveUser(userData);
+        
         return res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         console.error(error);

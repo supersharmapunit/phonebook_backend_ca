@@ -18,7 +18,7 @@ function setupAndStartServer() {
             message : err.message || "Something went wrong",
             data : null,
             success : false
-        }) // Send a generic error response
+        })
     }
 
     app.use(errorHandler);

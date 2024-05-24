@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { fakerEN } = require('@faker-js/faker'); // Import using the new package name
+const { fakerEN } = require('@faker-js/faker');
 const prisma = require("../config/dbClient");
 
 const generateUsers = async (numUsers) => {
@@ -55,10 +55,12 @@ const generateContacts = async (numContacts, users) => {
 const seedData = async () => {
     const numUsers = 10;
     const numContacts = 100;
-
+    console.log("starting to add users...");
     const users = await generateUsers(numUsers);
+    console.log("users added!");
+    console.log("starting to add contacts...");
     const contacts = await generateContacts(numContacts, users);
-
+    console.log("contact added!");
     console.log(`Generated ${users.length} users and ${contacts.length} contacts.`);
 };
 
