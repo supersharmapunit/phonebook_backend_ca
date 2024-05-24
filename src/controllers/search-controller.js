@@ -1,10 +1,8 @@
 // src/controllers/searchController.js
-const { PrismaClient } = require('@prisma/client');
 const { z } = require("zod");
 const { searchByNameSchema, searchByPhoneNumberSchema } = require('../validations/search-validations');
 
-
-const prisma = new PrismaClient();
+const prisma = require("../config/dbClient");
 
 const searchByName = async (req, res) => {
   try {

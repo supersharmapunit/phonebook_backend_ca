@@ -1,8 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 const { fakerEN } = require('@faker-js/faker'); // Import using the new package name
-
-const prisma = new PrismaClient();
+const prisma = require("../config/dbClient");
 
 const generateUsers = async (numUsers) => {
     const users = [];

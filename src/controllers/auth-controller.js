@@ -1,12 +1,11 @@
 // src/controllers/authController.js
-const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 const { z } = require("zod");
 const jwt = require("jsonwebtoken");
 const { userSchema, userLoginRequestSchema } = require('../validations/user-validations');
 const { SALTS, JWT_SECRET  } = require('../config/server-config');
 
-const prisma = new PrismaClient();
+const prisma = require("../config/dbClient");
 
 const register = async (req, res) => {
     try {

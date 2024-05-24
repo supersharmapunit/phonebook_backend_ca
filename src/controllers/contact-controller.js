@@ -1,12 +1,13 @@
 // src/controllers/contactController.js
-const { PrismaClient } = require('@prisma/client');
 const { contactSchema, markSpamSchema, getContactDetailsSchema } = require('../validations/contact-validations');
 const { z } = require("zod");
-const prisma = new PrismaClient();
+const prisma = require("../config/dbClient");
+const { PrismaClientKnownRequestError } = require('@prisma/client');
 
 const addContact = async (req, res) => {
     try {
         const userId = req.user.id; // Assuming you have implemented authentication middleware
+        console.log("here", userId, req.body);
         const contactData = contactSchema.parse(req.body);
 
         // Check if the contact already exists for the user
@@ -36,6 +37,14 @@ const addContact = async (req, res) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: error.issues });
         }
+        if (error instanceof PrismaClientKnownRequestError) {
+            if (error.code === 'P2002') {
+                return res.status(400).json({ error: 'Phone number already exists' });
+            }
+            console.error(error);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        console.log(error instanceof PrismaClientKnownRequestError);
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
     }

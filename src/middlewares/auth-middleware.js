@@ -1,9 +1,8 @@
 // src/middlewares/authMiddleware.js
-const { PrismaClient } = require('@prisma/client');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/server-config');
 
-const prisma = new PrismaClient();
+const prisma = require("../config/dbClient");
 
 const authMiddleware = async (req, res, next) => {
     try {
