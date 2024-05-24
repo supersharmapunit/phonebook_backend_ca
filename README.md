@@ -35,6 +35,11 @@ This project is a REST API built with Node.js, Express.js, Sequelize, MySQL, Zod
 4. Run the migrations: `npx prisma migrate dev`
 5. Start the Application: `npm start`
 
+### Or run with Docker
+
+1. Build Image - `docker build -t phonebook_ca .`
+2. Run `docker run -p 3000:3000 phonebook_ca`
+
 ## Usage
 
 The API endpoints can be accessed at `http://localhost:3000`. You can use tools like Postman or cURL to interact with the API.

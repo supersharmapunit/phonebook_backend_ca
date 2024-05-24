@@ -12,8 +12,16 @@ function setupAndStartServer() {
     app.use("/api", apiRoutes);
 
     function errorHandler(err, req, res, next) {
+        if (err instanceof TokenExpiredError) {
+            res.json({
+                error: err,
+                message: "JWT Token Expired",
+                data: null,
+                success: false
+            })
+        }
         console.error("global catch says", err.stack);
-        res.json({
+        return res.json({
             error : err,
             message : err.message || "Something went wrong",
             data : null,
