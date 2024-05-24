@@ -72,10 +72,11 @@ To start the database seeding, use the following command: `npm seed`
 - Error handling: Centralized error handling and consistent error responses.
 - Code structure: Followed the principles of separation of concerns and modular design.
 - Implemented authentication using JSON Web Tokens (JWT)
+- Added PM2 support for multiple instance generation
 
 ## Future Improvements
 
 - Integrate with a caching mechanism for improved performance
 - Implement pagination for large result sets
 - Add support for HTTPS and SSL/TLS encryption
-- Implement logging and monitoring for better visibility and debugging
+- Implement logging for better visibility and debugging
