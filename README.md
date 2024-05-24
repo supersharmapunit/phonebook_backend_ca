@@ -1,6 +1,6 @@
 # PHONEBOOK_CA REST API
 
-This project is a REST API built with Node.js, Express.js, Sequelize, MySQL, Zod, and Nodemon. The API provides functionality for user registration, contact management, spam reporting, and searching for contacts based on name or phone number.
+This project is a REST API built with Node.js, Express.js, Sequelize, MySQL, Zod, PM2, NGINX, Nodemon and DOCKER. The API provides functionality for user registration, contact management, spam reporting, and searching for contacts based on name or phone number.
 
 ## Tech Stack
 
@@ -57,6 +57,11 @@ To start the database seeding, use the following command: `npm seed`
 - `src/middleware/`: Custom middleware functions
 - `src/config/`: Configuration files
 - `src/validations/`: Contains all requests validations
+
+## DEPLOYMENT LINK - http://ec2-13-53-245-134.eu-north-1.compute.amazonaws.com
+
+> [!NOTE]
+> POST API JSON IMPORT IS PRESENT IN THIS REPOSITORY ITSELF
 
 ## Patterns and Best Practices Used
 
